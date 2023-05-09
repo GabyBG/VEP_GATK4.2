@@ -1,0 +1,12 @@
+#I had to install seven bridges software first
+
+
+
+## sevenbridges mount. note the names of directories are all lowercase.
+# list projects
+
+sbfs list
+sbfs mount /data/b7 --project kite-pharma/bioinfo-sm-217
+cd /data/b7/projects/kite-pharma/bioinfo-sm-217
+# run analysis .... then
+sbfs unmount /data/b7
