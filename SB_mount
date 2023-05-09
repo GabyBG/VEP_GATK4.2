@@ -1,12 +1,21 @@
 #I had to install seven bridges software first
+curl https://igor.sbgenomics.com/downloads/sbfs/install.sh -sSf | sudo sh
 
-
+#Had to add my credentials following the instuction in sb website
+sbfs configure
 
 ## sevenbridges mount. note the names of directories are all lowercase.
 # list projects
 
 sbfs list
-sbfs mount /data/b7 --project kite-pharma/bioinfo-sm-217
-cd /data/b7/projects/kite-pharma/bioinfo-sm-217
+
+mkdir BioInfo-SM-217
+mkdir BioInfo-SM-217/sb
+
+cd BioInfo-SM-217/sb
+sbfs mount . --project kite-pharma/bioinfo-sm-217
+
+cd /home/ubuntu/BioInfo-SM-217/sb/projects/kite-pharma/bioinfo-sm-217
+
 # run analysis .... then
-sbfs unmount /data/b7
+sbfs unmount /home/ubuntu/BioInfo-SM-217/sb
