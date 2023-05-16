@@ -1,0 +1,30 @@
+#We need some additional files for processing steps
+aws s3 cp s3://kite.sb/references/gatk_resources/af-only-gnomad.hg38.PASS.vcf.gz /home/ubuntu/gatk_out
+aws s3 cp s3://kite.sb/references/gatk_resources/af-only-gnomad.hg38.PASS.vcf.gz.tbi /home/ubuntu/gatk_out
+
+#we need to install vp to run some normalization
+git clone https://github.com/atks/vt.git
+cd vt
+git submodule update --init --recursive
+make
+
+~/gatk_out/vt/vt normalize /home/ubuntu/gatk_out/germline_jointcalls_filtered.vcf.gz -o germline_jointcalls_filtered_normalized.vcf.gz -r reference/Homo_sapiens_assembly38.fasta
+
+
+git clone https://github.com/Ensembl/ensembl-vep.git
+cd ensembl-vep/
+sudo apt-get install libdbi-perl
+perl INSTALL.pl -a p -g list
+perl -MModule::Build -le 'print $Module::Build::VERSION'
+perl INSTALL.pl
+sudo apt-get install -y libmodule-build-perl
+sudo apt-get install -y libdbd-mysql-perl
+
+##
+cd /home/ubuntu/.vep
+
+#I moved the files I was going to work with to that folder
+mv /home/ubuntu/gatk_out/germline_jointcalls_filtered.vcf.gz /home/ubuntu/.vep
+
+#Then ran vep with the default
+~/ensembl-vep/vep -i germline_jointcalls_filtered.vcf.gz --cache
